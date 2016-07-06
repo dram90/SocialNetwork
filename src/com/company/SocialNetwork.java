@@ -2,10 +2,7 @@ package com.company;
 
 import com.google.common.collect.*;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedSet;
+import java.util.*;
 
 /**
  * Created by professor on 04/07/2016.
@@ -79,24 +76,6 @@ public class SocialNetwork {
     }
 
 
-
-
-
-    /*
-
-    //put returns true if the method increased the size of the multimap, or false if the multimap already contained the key-value pair
-
-       public void addFriendship(Person p1, Person p2) {
-
-
-        if (!friends.put(p1, p2) && (!friends.put(p2, p1))) {
-            System.out.println("The person " + p2.getName() + " is already a friend of " + p1.getName());
-            throw new RuntimeException("The person " + p2.getName() + " is already a friend of " + p1.getName());
-        }
-    }
-*/
-
-
     public void addFriendship (Person p1, Person p2)
     {
         checkFriendship(p1, p2);
@@ -129,7 +108,17 @@ public class SocialNetwork {
     }
 
 
-    public Set<Person> getCouplesFriends (Person person){return null;}
+    public Set<Person> getCouplesFriends (Person person){
+
+        Person couple = getCouple(person);
+        if (couple==null)
+        {
+            System.out.println("The person" +person.getName()+ " hasn't couple");
+            return new TreeSet<Person>();
+        }
+        else
+            return getFriends(couple);
+    }
 
     public Set<Person> getFriendsCouple (Person person){return null;}
 

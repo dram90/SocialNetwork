@@ -99,6 +99,9 @@ public class Main {
         System.out.println("Carol's friends are: " +socialNetwork.getFriends(carol));
         System.out.println("Pau's friends are: " +socialNetwork.getFriends(pau));
 
+
+        System.out.println("The friends of Cristina's couple are: "+socialNetwork.getCouplesFriends(cristina));
+
     }
 
     private static void initializeSocialNetwork() {
