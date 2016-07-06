@@ -15,7 +15,7 @@ public class SocialNetwork {
     private Map<String, Person> peopleByName = new HashMap<>();
     private Map<Long, Person> peopleById = new HashMap<>();
     private BiMap<Person, Person> couples = HashBiMap.create();
-    private Multimap<Person, Person> friends = ArrayListMultimap.create();
+    private TreeMultimap<Person,Person> friendships = TreeMultimap.create();
 
     public void addPerson(Person person){
         peopleByName.put(person.getName(),person);
@@ -30,6 +30,7 @@ public class SocialNetwork {
     }
 
     public void addCouple(Person p1,Person p2){
+
 
 
         //nos aseguramos que la persona no está en la lista de parejas. Si tiene paeja, no debe dejarnos añadir una
@@ -49,7 +50,7 @@ public class SocialNetwork {
         }
         */
 
-        // El codigo anterior equivale al siguiente:
+       // El codigo anterior equivale al siguiente:
 
         checkIfPersonBelongsToACouple(p1);
         checkIfPersonBelongsToACouple(p2);
@@ -57,9 +58,10 @@ public class SocialNetwork {
     }
 
     private void checkIfPersonBelongsToACouple(Person p1) {
-        if (couples.containsKey(p1) || couples.values().contains(p1)) {
-            System.out.println("The person " + p1.getName() + " already has a couple");
-            throw new RuntimeException("The person " + p1.getName() + " already has a couple"); //lanzar un error y parar la ejecución
+        if(couples.containsKey(p1)|| couples.values().contains(p1))
+        {
+            System.out.println("The person "+ p1.getName()+ " already has a couple");
+            throw  new RuntimeException("The person " +p1.getName()+ " already has a couple"); //lanzar un error y parar la ejecución
         }
     }
 
@@ -76,14 +78,54 @@ public class SocialNetwork {
         }
     }
 
-    public void addFriendship(Person p1, Person p2) {
 
-        friends.put(p1, p2);
+
+
+
+    /*
+
+    //put returns true if the method increased the size of the multimap, or false if the multimap already contained the key-value pair
+
+       public void addFriendship(Person p1, Person p2) {
+
+
+        if (!friends.put(p1, p2) && (!friends.put(p2, p1))) {
+            System.out.println("The person " + p2.getName() + " is already a friend of " + p1.getName());
+            throw new RuntimeException("The person " + p2.getName() + " is already a friend of " + p1.getName());
+        }
     }
+*/
+
+
+    public void addFriendship (Person p1, Person p2)
+    {
+        checkFriendship(p1, p2);
+
+        friendships.put(p1,p2);
+        friendships.put (p2, p1);
+    }
+
+
+    private void checkFriendship(Person p1, Person p2) {
+        if (friendships.containsKey(p1)
+                && friendships.get(p1).contains(p2)){
+            System.out.println(p2.getName()+ " is already a friend of " +p2.getName());
+            throw new RuntimeException(p2.getName()+ " is already a friend of " +p1.getName());
+        }
+    }
+
+    public void addFriendship (Person p1, Person... friends){
+
+        for (Person friend: friends)
+        {
+            addFriendship(p1,friend);
+        }
+    }
+
 
     public Set<Person> getFriends(Person person)//Set y no List para que no haya amigos duplicados
     {
-        return null;
+        return friendships.get(person);
     }
 
 

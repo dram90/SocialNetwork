@@ -3,7 +3,7 @@ package com.company;
 /**
  * Created by Dimple on 03/07/2016.
  */
-public class Person {
+public class Person implements Comparable<Person>{
 
     private Long id;
     private String name;
@@ -68,5 +68,11 @@ public class Person {
         result = 31 * result + getName().hashCode();
         result = 31 * result + getSurname().hashCode();
         return result;
+    }
+
+    @Override
+    public int compareTo(Person person) {
+
+        return this.getId().compareTo(person.getId());
     }
 }
