@@ -1,7 +1,6 @@
 package com.company;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
+import com.google.common.collect.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +15,7 @@ public class SocialNetwork {
     private Map<String, Person> peopleByName = new HashMap<>();
     private Map<Long, Person> peopleById = new HashMap<>();
     private BiMap<Person, Person> couples = HashBiMap.create();
+    private Multimap<Person, Person> friends = ArrayListMultimap.create();
 
     public void addPerson(Person person){
         peopleByName.put(person.getName(),person);
@@ -30,7 +30,37 @@ public class SocialNetwork {
     }
 
     public void addCouple(Person p1,Person p2){
+
+
+        //nos aseguramos que la persona no está en la lista de parejas. Si tiene paeja, no debe dejarnos añadir una
+
+        /*
+
+        if(couples.containsKey(p1)|| couples.values().contains(p1))
+        {
+            System.out.println("The person "+ p1.getName()+ "already has a couple");
+            throw  new RuntimeException("The person " +p1.getName()+ "already has a couple"); //lanzar un error y parar la ejecución
+        }
+
+        if(couples.containsKey(p2)|| couples.values().contains(p2))
+        {
+            System.out.println("The person "+ p2.getName()+ "already has a couple");
+            throw  new RuntimeException("The person " +p2.getName()+ "already has a couple"); //lanzar un error y parar la ejecución
+        }
+        */
+
+        // El codigo anterior equivale al siguiente:
+
+        checkIfPersonBelongsToACouple(p1);
+        checkIfPersonBelongsToACouple(p2);
         couples.put(p1,p2);
+    }
+
+    private void checkIfPersonBelongsToACouple(Person p1) {
+        if (couples.containsKey(p1) || couples.values().contains(p1)) {
+            System.out.println("The person " + p1.getName() + " already has a couple");
+            throw new RuntimeException("The person " + p1.getName() + " already has a couple"); //lanzar un error y parar la ejecución
+        }
     }
 
     public Person getCouple(Person person){
@@ -46,10 +76,16 @@ public class SocialNetwork {
         }
     }
 
-    public void addFriendship(Person p1, Person p2){}
+    public void addFriendship(Person p1, Person p2) {
 
-    public Set<Person> getFriends(Person person){return null;}
-        //Set y no List para que no haya amigos duplicados
+        friends.put(p1, p2);
+    }
+
+    public Set<Person> getFriends(Person person)//Set y no List para que no haya amigos duplicados
+    {
+        return null;
+    }
+
 
     public Set<Person> getCouplesFriends (Person person){return null;}
 
