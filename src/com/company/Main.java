@@ -102,6 +102,8 @@ public class Main {
 
         System.out.println("The friends of Cristina's couple are: "+socialNetwork.getCouplesFriends(cristina));
 
+        System.out.println("The couples of Cristina's friends are:" + socialNetwork.getFriendsCouple(cristina));
+
     }
 
     private static void initializeSocialNetwork() {

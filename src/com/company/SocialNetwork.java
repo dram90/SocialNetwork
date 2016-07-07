@@ -14,6 +14,8 @@ public class SocialNetwork {
     private BiMap<Person, Person> couples = HashBiMap.create();
     private TreeMultimap<Person,Person> friendships = TreeMultimap.create();
 
+        //API PÚBLICO
+
     public void addPerson(Person person){
         peopleByName.put(person.getName(),person);
         peopleById.put(person.getId(),person);
@@ -104,11 +106,19 @@ public class SocialNetwork {
 
     public Set<Person> getFriends(Person person)//Set y no List para que no haya amigos duplicados
     {
-        return friendships.get(person);
+
+        Set<Person> friends = friendships.get(person);
+        if (friends!=null) //por si no tiene amigos.
+        {
+            return friends;
+        }
+        else
+            return new TreeSet<>();
     }
 
 
     public Set<Person> getCouplesFriends (Person person){
+
 
         Person couple = getCouple(person);
         if (couple==null)
@@ -120,7 +130,26 @@ public class SocialNetwork {
             return getFriends(couple);
     }
 
-    public Set<Person> getFriendsCouple (Person person){return null;}
+    public Set<Person> getFriendsCouple (Person person) {
+
+        Set<Person> friends = getFriends(person);
+        Set<Person> couples= new HashSet<>();
+        for (Person friend : friends) {
+
+            Person couple = getCouple(friend);
+            if (couple != null)
+            {
+                couples.add(couple);
+            }
+        }
+
+        return couples;
+    }
+
+    public Integer getNumberOfFriends(Person person)
+    {
+       return getFriends(person).size();
+    }
 
     public Set<Person> popularity (Person person) {return null;}
 
