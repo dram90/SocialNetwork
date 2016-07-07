@@ -14,6 +14,7 @@ public class SocialNetwork {
     private BiMap<Person, Person> couples = HashBiMap.create();
     private TreeMultimap<Person,Person> friendships = TreeMultimap.create();
 
+
         //API PÚBLICO
 
     public void addPerson(Person person){
@@ -151,7 +152,31 @@ public class SocialNetwork {
        return getFriends(person).size();
     }
 
-    public Set<Person> popularity (Person person) {return null;}
+    public List<Person> popularity (Person person) {
+
+        List<Person> personList = new ArrayList<>(peopleByName.values()); // guardamos el map de personas en una array list
+        Collections.sort(personList, new Comparator<Person>() {
+            @Override
+            public int compare(Person p1, Person p2)
+            {
+                int numFriends1 =getNumberOfFriends(p1);
+                int numFriends2 = getNumberOfFriends(p2);
+                if (numFriends1<numFriends2)
+                {
+                    return 1;
+                }
+
+                if (numFriends1>numFriends2)
+                {
+                   return -1;
+                }
+
+                else return 0;
+            }
+        });
+
+        return personList;
+    }
 
     public int getConnectionDegree(Person p1, Person p2){return 0;}
 
