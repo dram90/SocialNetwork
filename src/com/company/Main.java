@@ -1,8 +1,5 @@
 package com.company;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-
 import java.util.*;
 
 public class Main {
@@ -44,6 +41,7 @@ public class Main {
         Person pau = new Person(7L, "Pau","Claris");
         Person julia = new Person(8L,"Julia","Domenech");
         Person carol = new Person(9L,"Carol","Castillo");
+        Person luis = new Person(10L,"Luis", "Hernandez");
 
 
 
@@ -56,6 +54,7 @@ public class Main {
         socialNetwork.addPerson(pau);
         socialNetwork.addPerson(julia);
         socialNetwork.addPerson(carol);
+        socialNetwork.addPerson(luis);
 
 
         socialNetwork.addCouple(cristina,juan);
@@ -78,13 +77,11 @@ public class Main {
         System.out.println("Pau's couple is: "+socialNetwork.getCouple(pau));
 
 
-        socialNetwork.addFriendship(juan,marc);
+        socialNetwork.addFriendship(juan,carol,marc);// adding more than one pers at a time
         socialNetwork.addFriendship(juan,antonio);
-        socialNetwork.addFriendship(cristina,pedro);
-        socialNetwork.addFriendship(pedro,julia);
-        socialNetwork.addFriendship(julia,carol,ana); //adding more than one friend at a time
-        socialNetwork.addFriendship(ana,antonio);
-        socialNetwork.addFriendship(marc,antonio);
+        socialNetwork.addFriendship(antonio,pedro,cristina,carol);
+        socialNetwork.addFriendship(carol,ana,julia);
+        socialNetwork.addFriendship(julia,luis);
 
         /* socialNetwork.addFriendship(marc,antonio); trying code .Throws an exception because they are already friends*/
 
@@ -108,7 +105,14 @@ public class Main {
         System.out.println("Number of friends of marc: " +socialNetwork.getNumberOfFriends(marc));
 
 
-        System.out.println("Popularity" +socialNetwork.popularity(cristina));
+        System.out.println("Popularity" +socialNetwork.popularity());
+
+
+        System.out.println("The connection degree between Juan and Pau is " + socialNetwork.existsConnection(juan,pau));
+       System.out.println("The connection degree between Juan and Antonio is " + socialNetwork.existsConnection(juan,antonio));
+        System.out.println("The connection degree between Juan and Cristina is " + socialNetwork.existsConnection(juan,cristina));
+        System.out.println("The connection degree between Juan & Luis is "+ socialNetwork.existsConnection(juan,luis));
+
 
     }
 

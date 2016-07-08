@@ -13,6 +13,8 @@ public class SocialNetwork {
     private Map<Long, Person> peopleById = new HashMap<>();
     private BiMap<Person, Person> couples = HashBiMap.create();
     private TreeMultimap<Person,Person> friendships = TreeMultimap.create();
+    private HashSet<Person> friendsVisited = new HashSet<>();
+
 
 
         //API PÚBLICO
@@ -152,36 +154,66 @@ public class SocialNetwork {
        return getFriends(person).size();
     }
 
-    public List<Person> popularity (Person person) {
+    public List<Person> popularity () {
 
         List<Person> personList = new ArrayList<>(peopleByName.values()); // guardamos el map de personas en una array list
-        Collections.sort(personList, new Comparator<Person>() {
-            @Override
-            public int compare(Person p1, Person p2)
+        Collections.sort(personList, (p1, p2) -> {
+            int numFriends1 =getNumberOfFriends(p1);
+            int numFriends2 = getNumberOfFriends(p2);
+            if (numFriends1<numFriends2)
             {
-                int numFriends1 =getNumberOfFriends(p1);
-                int numFriends2 = getNumberOfFriends(p2);
-                if (numFriends1<numFriends2)
-                {
-                    return 1;
-                }
-
-                if (numFriends1>numFriends2)
-                {
-                   return -1;
-                }
-
-                else return 0;
+                return 1;
             }
+
+            if (numFriends1>numFriends2)
+            {
+               return -1;
+            }
+
+            else return 0;
         });
 
         return personList;
     }
 
-    public int getConnectionDegree(Person p1, Person p2){return 0;}
+    public boolean existsConnection(Person p1, Person p2) {
 
-    public SortedSet<Person> getConnectionDegreePath
-            (Person p1,Person p2) {return null;}
+        Set<Person> visitedPeople = new HashSet<>();
+        Queue<Person> peopleQueue = new LinkedList<>();
+
+        Person nextPerson = p1;
+        boolean friendFound = false;
+        visitedPeople.add(p1);
+
+        globalLoop:
+        while (nextPerson != null) {
+
+            for (Person friend : getFriends(nextPerson)) {
+
+                if (friend.equals(p2)) {
+                    friendFound = true;
+                    break globalLoop;
+                }
+
+                if (!visitedPeople.contains(friend)) {
+
+                    visitedPeople.add(friend);
+                    peopleQueue.offer(friend);
+
+                }
+            }
+
+            nextPerson = peopleQueue.poll();
+        }
+
+        return friendFound;
+    }
+
+
+        public SortedSet<Person> getConnectionDegreePath(Person p1, Person p2)
+        {
+            return null;
+        }
 
 
 
