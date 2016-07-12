@@ -198,7 +198,10 @@ public class SocialNetwork {
                 if (!visitedPeople.contains(friend)) {
 
                     visitedPeople.add(friend);
-                    peopleQueue.offer(friend);
+                   if(getNumberOfFriends(friend)>1) //simple optimization
+                        {
+                            peopleQueue.offer(friend);
+                        }
 
                 }
             }
