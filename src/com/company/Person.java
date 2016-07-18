@@ -2,9 +2,6 @@ package com.company;
 
 import java.util.Comparator;
 
-/**
- * Created by Dimple on 03/07/2016.
- */
 public class Person implements Comparable<Person>{
 
     private Long id;
